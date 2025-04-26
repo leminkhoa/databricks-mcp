@@ -1,0 +1,13 @@
+[project]
+name = "mcp-databricks"
+version = "0.1.0"
+description = "Databricks MCP server for managing Databricks resources"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "dotenv>=0.9.9",
+    "httpx>=0.28.1",
+    "fastmcp>=0.1.0",
+    "pydantic>=2.0.0",
+    "mcp[cli]>=1.6.0",
+]
