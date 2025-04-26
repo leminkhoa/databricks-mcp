@@ -10,11 +10,8 @@ from ..core.config import settings
 from ..core.logging import create_logger
 from ..mcp_components import mcp_app
 
-# Import tool modules to register tools
-from ..mcp_components.tools import tools_cluster, tools_sql, tools_workspace
 
 # Constants
-API_VERSION = "2.1"
 USER_AGENT = "databricks-mcp/1.0"
 
 class DatabricksMCPServer:
@@ -22,7 +19,6 @@ class DatabricksMCPServer:
     
     def __init__(self, 
                  server_name: str = "databricks", 
-                 api_version: str = API_VERSION, 
                  user_agent: str = USER_AGENT
         ):
         """
@@ -38,7 +34,6 @@ class DatabricksMCPServer:
         
         # Store reference to the MCP app
         self.mcp = mcp_app
-        self.api_version = api_version
         self.user_agent = user_agent
         self.is_running = False
   
