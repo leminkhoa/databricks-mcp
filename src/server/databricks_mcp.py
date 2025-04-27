@@ -2,9 +2,6 @@
 Databricks MCP server implementation.
 """
 
-import os
-import sys
-import traceback
 
 from ..core.config import settings, Settings
 from ..core.logging import create_logger

@@ -17,7 +17,7 @@ class StatementExecution(BaseModel):
     warehouse_id: str = Field(..., description="ID of the SQL warehouse to use")
     statement: str = Field(..., description="The SQL statement to execute")
     catalog: Optional[str] = Field(None, description="The catalog to use")
-    schema: Optional[str] = Field(None, description="The schema to use")
+    table_schema: Optional[str] = Field(None, description="The schema to use")
     disposition: Optional[str] = Field("INLINE", description="How to return the result (INLINE or EXTERNAL_LINKS)")
     wait_timeout: Optional[int] = Field(None, description="Time in seconds to wait for completion")
 
@@ -29,7 +29,7 @@ async def execute_sql_statement(
     statement: str,
     *,
     catalog: Optional[str] = None,
-    schema: Optional[str] = None,
+    table_schema: Optional[str] = None,
     disposition: str = "INLINE",
     wait_timeout: Optional[int] = None,
     **additional_config: Any
@@ -43,7 +43,7 @@ async def execute_sql_statement(
         warehouse_id: ID of the SQL warehouse to use
         statement: The SQL statement to execute
         catalog: Optional catalog to use
-        schema: Optional schema to use
+        table_schema: Optional schema to use
         disposition: How to return the result (INLINE or EXTERNAL_LINKS) (default: INLINE)
         wait_timeout: Optional time in seconds to wait for completion
         **additional_config: Additional configuration parameters supported by Databricks
@@ -58,7 +58,7 @@ async def execute_sql_statement(
         >>> result = await execute_sql_statement(
         ...     warehouse_id="warehouse_id",
         ...     statement="SELECT * FROM my_table LIMIT 10",
-        ...     schema="my_schema"
+        ...     table_schema="my_schema"
         ... )
         >>> print(f"Statement ID: {result['statement_id']}")
     """
@@ -73,8 +73,8 @@ async def execute_sql_statement(
 
     if catalog:
         execution_config["catalog"] = catalog
-    if schema:
-        execution_config["schema"] = schema
+    if table_schema:
+        execution_config["table_schema"] = table_schema
     if wait_timeout:
         execution_config["wait_timeout"] = wait_timeout
 
