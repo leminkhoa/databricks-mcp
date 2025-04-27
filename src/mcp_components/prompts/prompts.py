@@ -70,3 +70,55 @@ def create_databricks_cluster_configurations_prompt(
     return [
         UserMessage(content=prompt_text),
     ]
+
+
+@mcp_app.prompt(
+    name="create-databricks-table",
+    description="Generate commands for creating a Databricks table",
+)
+def create_databricks_table_prompt(
+    cluster_id: str,
+    table_path: str,
+    schema: str,
+    table_type: str = "MANAGED",
+    location: str = "",
+    language: str = "sql"
+) -> list[Message]:
+    """
+    Generate a prompt for creating a Databricks table.
+
+    Args:
+        cluster_id: ID of the cluster to run the command on (required)
+        table_path: Full table path with three-part identifier (required)
+        schema: Schema definition for the table (required)
+        table_type: Type of table - MANAGED or EXTERNAL (optional)
+        location: Location for EXTERNAL tables (optional)
+        language: Language to use for execution (optional, default = sql)
+    Returns:
+        Prompt result with messages for the AI assistant
+    """
+    # Generate prompt message
+    prompt_text = f"""
+        I need help creating a Databricks table
+
+        Please first create an execution context ID from the cluster {cluster_id}. Please memorize this execution ID in case it's needed for subsequent runs.
+
+        Execute command to create the table following requirements:
+        - Table path (three dot identifiers): {table_path}
+        - Schema: {schema}
+        - Table type: {table_type}
+        """
+
+    if location:
+        prompt_text += f"- Location: {location}\n . Please make sure scheme from either S3, R2 or ABFSS."
+    else:
+        prompt_text += "- No custom location specified, use default CREATE TABLE without LOCATION clause\n"
+
+    prompt_text += f"""
+        Language used: {language}
+        After the table is created, run DESCRIBE TABLE to print out the table properties
+        """
+
+    return [
+        UserMessage(content=prompt_text),
+    ]
