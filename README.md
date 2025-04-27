@@ -27,7 +27,7 @@ With this server, AI assistants like Claude can:
 - 🔑 Databricks Personal Access Token (PAT)
 - 📦 Required Python packages (installed in setup)
 
-## 🛠️ Setup
+## 🚀 Quickstart
 
 ### 1️⃣ Clone the repository
 
@@ -55,7 +55,7 @@ TRANSPORT="stdio"
 LOG_LEVEL="INFO"
 ```
 
-> 💡 **Tip:** You can use the `env.sample` file as a template.
+> 💡 **Tip:** For further instructions, You can use the `env.sample` file as a template.
 
 ### 3️⃣ Choose Your Installation Method
 
@@ -91,8 +91,10 @@ docker build -t databricks-mcp .
 
 1. Install uv (if not already installed):
 ```bash
-pip install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
+
+> 💡 **Note:** See [uv installation documentation](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) for alternative installation methods.
 
 2. Set up virtual environment:
 ```bash
@@ -130,6 +132,11 @@ If not using Docker or Cursor integration, start the server with:
 
 ```bash
 python main.py
+```
+
+or 
+```bash
+uv run main.py
 ```
 
 ### Connecting to Claude or other MCP clients
