@@ -12,6 +12,7 @@ logger = create_logger(__name__)
 
 COMMAND_EXECUTION_ENDPOINT = "/api/1.2/commands/execute"
 CREATE_CONTEXT_ENDPOINT = "/api/1.2/contexts/create"
+COMMAND_STATUS_ENDPOINT = "/api/1.2/commands/status"
 
 class CommandExecutionConfig(BaseModel):
     """Configuration for executing a command on a Databricks cluster."""
@@ -27,6 +28,15 @@ class ContextCreationConfig(BaseModel):
     """Configuration for creating an execution context on a Databricks cluster."""
     cluster_id: str = Field(..., description="ID of the cluster to create the context on")
     language: str = Field(..., description="Language for the execution context (python, scala, sql)")
+
+    class Config:
+        extra = "allow"  # Allow additional fields that might be supported by Databricks
+
+class CommandStatusConfig(BaseModel):
+    """Configuration for retrieving the status of a command execution."""
+    command_id: str = Field(..., description="ID of the command to get status for")
+    cluster_id: str = Field(..., description="ID of the cluster where the command was executed")
+    context_id: str = Field(..., description="Context ID for the command execution")
 
     class Config:
         extra = "allow"  # Allow additional fields that might be supported by Databricks
@@ -101,7 +111,7 @@ async def execute_command(
     logger.info(f"Successfully executed command on cluster {cluster_id}")
     return response
 
-async def create_context(
+async def create_execution_context(
     cluster_id: str,
     language: str
 ) -> Dict[str, Any]:
@@ -155,4 +165,59 @@ async def create_context(
     )
     
     logger.info(f"Successfully created execution context on cluster {cluster_id}")
+    return response
+
+async def get_command_status(
+    command_id: str,
+    cluster_id: str,
+    context_id: str
+) -> Dict[str, Any]:
+    """
+    Get the status of a command execution on a Databricks cluster.
+    
+    Documentation page: https://docs.databricks.com/api/workspace/commandexecution/commandstatus
+    
+    Args:
+        command_id: ID of the command to get status for
+        cluster_id: ID of the cluster where the command was executed
+        context_id: Context ID for the command execution
+        
+    Returns:
+        Dict containing the command status information
+        
+    Raises:
+        DatabricksAPIError: If the status retrieval fails
+        
+    Example:
+        >>> status = await get_command_status(
+        ...     command_id="abcd1234",
+        ...     cluster_id="1234-567890-abcdef",
+        ...     context_id="5678abcd"
+        ... )
+        >>> print(status["status"])
+    """
+    # Construct the status request
+    status_config = {
+        "commandId": command_id,
+        "clusterId": cluster_id,
+        "contextId": context_id
+    }
+    
+    # Validate the configuration
+    CommandStatusConfig(
+        command_id=command_id,
+        cluster_id=cluster_id,
+        context_id=context_id
+    )
+    
+    logger.info(f"Getting status for command: {command_id} on cluster: {cluster_id}")
+    
+    # Make the API request
+    response = await make_databricks_request(
+        endpoint=COMMAND_STATUS_ENDPOINT,
+        method="GET",
+        params=status_config
+    )
+    
+    logger.info(f"Successfully retrieved status for command {command_id}")
     return response

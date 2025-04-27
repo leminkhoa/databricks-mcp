@@ -1,6 +1,6 @@
 - name: user_profiles
   database: default
-  path: hive_metastore/default/user_profiles
+  path: hive_metastore.default.user_profiles
   columns:
     - name: user_id
       type: string
@@ -15,7 +15,7 @@
 
 - name: orders
   database: sales
-  path: hive_metastore/sales/orders
+  path: hive_metastore.sales.orders
   columns:
     - name: order_id
       type: string

@@ -6,7 +6,7 @@ import json
 from typing import Any, Dict, List
 
 from mcp.types import TextContent
-from src.api.sql import sql_warehouses, statement_execution
+from src.api.sql import sql_warehouses
 from .. import mcp_app
 
 @mcp_app.tool(
@@ -55,34 +55,3 @@ async def tool_create_sql_warehouse(params: Dict[str, Any]) -> List[TextContent]
         return [{"text": json.dumps(result)}]
     except Exception as e:
         return [{"text": json.dumps({"error": str(e)})}]
-
-@mcp_app.tool(
-    name="execute_sql_statement",
-    description="""
-    Execute a SQL statement using a SQL warehouse.
-    
-    Required parameters:
-    - warehouse_id (str): ID of the SQL warehouse to use
-    - statement (str): The SQL statement to execute
-    
-    Optional parameters:
-    - catalog (str): The catalog to use
-    - schema (str): The schema to use
-    - disposition (str): How to return the result (INLINE or EXTERNAL_LINKS) (default: INLINE)
-    - wait_timeout (int): Time in seconds to wait for completion
-    """
-)
-async def tool_execute_sql_statement(params: Dict[str, Any]) -> List[TextContent]:
-    """Execute a SQL statement using a SQL warehouse."""
-    try:
-        # Validate required parameters
-        required_params = ["warehouse_id", "statement"]
-        missing_params = [p for p in required_params if p not in params]
-        if missing_params:
-            raise ValueError(f"Missing required parameters: {', '.join(missing_params)}")
-        
-        # Execute the statement
-        result = await statement_execution.execute_sql_statement(**params)
-        return [{"text": json.dumps(result)}]
-    except Exception as e:
-        return [{"text": json.dumps({"error": str(e)})}] 
