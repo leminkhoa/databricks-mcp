@@ -27,29 +27,16 @@ With this server, AI assistants like Claude can:
 - 🔑 Databricks Personal Access Token (PAT)
 - 📦 Required Python packages (installed in setup)
 
-## 🛠️ Setup
+## 🚀 Quickstart
 
 ### 1️⃣ Clone the repository
 
 ```bash
 git clone https://github.com/leminkhoa/databricks-mcp
-cd mcp-databricks
+cd databricks-mcp
 ```
 
-### 2️⃣ Set up virtual environment
-
-```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-```
-
-### 3️⃣ Install dependencies
-
-```bash
-pip install -e .
-```
-
-### 4️⃣ Configure environment variables
+### 2️⃣ Configure environment variables
 
 Create a `.env` file in the project root with your Databricks credentials:
 
@@ -62,21 +49,94 @@ DATABRICKS_TOKEN="dapi_<your_token_here>"
 SERVER_HOST="0.0.0.0"
 SERVER_PORT="8000"
 DEBUG="false"
+TRANSPORT="stdio"
 
 # Logging Configuration
 LOG_LEVEL="INFO"
 ```
 
-> 💡 **Tip:** You can use the `env.sample` file as a template.
+> 💡 **Tip:** For further instructions, You can use the `env.sample` file as a template.
+
+### 3️⃣ Choose Your Installation Method
+
+You can use MCP Databricks in two ways:
+
+#### Option A: Docker (Recommended for production)
+
+1. Build the Docker image:
+```bash
+docker build -t databricks-mcp .
+```
+
+2. Configure in Cursor with the following `mcp.json` entry:
+```json
+{
+  "databricks-mcp-docker": {
+    "command": "docker",
+    "args": [
+      "run",
+      "--rm",
+      "-i",
+      "--name", "databricks-mcp",
+      "--env-file", "<path/to/.env>",
+      "databricks-mcp"
+    ]
+  }
+}
+```
+
+> 💡 **Note:** Replace `<path/to/.env>` with the absolute path to your `.env` file.
+
+#### Option B: Local Installation with uv
+
+1. Install uv (if not already installed):
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+> 💡 **Note:** See [uv installation documentation](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) for alternative installation methods.
+
+2. Set up virtual environment:
+```bash
+uv venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
+
+3. Install dependencies with uv:
+```bash
+uv sync
+```
+
+4. Configure in Cursor with the following `mcp.json` entry:
+```json
+{
+  "databricks-mcp-stdio": {
+    "command": "uv",
+    "args": [
+      "--directory",
+      "<repository directory>",
+      "run",
+      "main.py"
+    ]
+  }
+}
+```
+
+> 💡 **Note:** Replace `<repository directory>` with the absolute path to your cloned repository.
 
 ## 🚀 Usage
 
 ### Running the MCP Server
 
-Start the server with a simple command:
+If not using Docker or Cursor integration, start the server with:
 
 ```bash
 python main.py
+```
+
+or 
+```bash
+uv run main.py
 ```
 
 ### Connecting to Claude or other MCP clients
