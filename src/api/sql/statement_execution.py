@@ -13,7 +13,7 @@ logger = create_logger(__name__)
 STATEMENT_EXECUTE_ENDPOINT = "/api/2.0/sql/statements"
 
 class StatementExecution(BaseModel):
-    """Configuration for executing a SQL statement."""
+    """Configuration for executing a SQL statement using a SQL warehouse."""
     warehouse_id: str = Field(..., description="ID of the SQL warehouse to use")
     statement: str = Field(..., description="The SQL statement to execute")
     catalog: Optional[str] = Field(None, description="The catalog to use")
