@@ -26,7 +26,7 @@ class ConfigurationError(Exception):
     pass
 
 class Settings:
-    """Settings for the application."""
+    """Settings for the MCP application."""
     
     def __init__(self):
         """Initialize settings from environment variables."""
@@ -44,6 +44,9 @@ class Settings:
         
         # Version
         self.version = VERSION
+
+        # Transport
+        self.transport = self._get_env("TRANSPORT", "stdio").lower()
         
         # Validate settings
         self._validate_settings()

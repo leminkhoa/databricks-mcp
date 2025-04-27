@@ -5,8 +5,10 @@ This module defines prompts for the Databricks MCP integration,
 directly registering them with the mcp_app instance.
 """
 
-from fastmcp.prompts.prompt import UserMessage, AssistantMessage, Message
+from mcp.server.fastmcp.prompts.base import UserMessage, Message
 from .. import mcp_app
+
+
 
 @mcp_app.prompt(
     name="create-databricks-cluster-configurations",
