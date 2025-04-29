@@ -178,7 +178,4 @@ The MCP Databricks server provides a comprehensive toolkit for managing your Dat
 
 ---
 
-<p align="center">
-  <i>Built with ❤️ for Databricks and AI integration</i>
-</p>
 
