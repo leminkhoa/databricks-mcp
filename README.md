@@ -149,32 +149,45 @@ The MCP Databricks server provides a comprehensive toolkit for managing your Dat
 
 ### 💻 Cluster Management
 
-| Tool | Description |
-|------|-------------|
-| `list_clusters` | List all Databricks clusters in the workspace |
-| `create_cluster` | Create a new Databricks cluster with customizable settings |
-| `delete_cluster` | Delete a Databricks cluster by ID |
-| `start_cluster` | Start a terminated Databricks cluster |
-| `list_node_types` | List all available node types for Databricks clusters |
-| `list_spark_versions` | List all available Spark versions for Databricks clusters |
-| `get_cluster` | Get detailed information about a specific Databricks cluster |
+| Tool                | Description                                                                 |
+|---------------------|-----------------------------------------------------------------------------|
+| `list_clusters`     | List all Databricks clusters in the workspace                               |
+| `create_cluster`    | Create a new Databricks cluster with customizable settings                  |
+| `delete_cluster`    | Delete a Databricks cluster by ID                                           |
+| `start_cluster`     | Start a terminated Databricks cluster                                       |
+| `list_node_types`   | List all available node types for Databricks clusters                       |
+| `list_spark_versions` | List all available Spark versions for Databricks clusters                 |
+| `get_cluster`       | Get detailed information about a specific Databricks cluster                |
+
+### 📦 Library Management
+
+| Tool                | Description                                                                 |
+|---------------------|-----------------------------------------------------------------------------|
+| `install_libraries` | Install libraries (JAR, WHL, PyPI, Maven, CRAN, etc.) on a running cluster  |
+
+### 🖥️ Command Execution
+
+| Tool                    | Description                                                            |
+|-------------------------|------------------------------------------------------------------------|
+| `execute_command`       | Execute a command (Python, Scala, SQL) on a running Databricks cluster |
+| `create_execution_context` | Create an execution context for interactive command sessions         |
 
 ### 📊 SQL Warehouse Management
 
-| Tool | Description |
-|------|-------------|
-| `list_sql_warehouses` | List all SQL warehouses in the workspace |
-| `create_sql_warehouse` | Create a new SQL warehouse with configurable size and settings |
-| `execute_sql_statement` | Execute SQL statements using a SQL warehouse |
+| Tool                    | Description                                                            |
+|-------------------------|------------------------------------------------------------------------|
+| `list_sql_warehouses`   | List all SQL warehouses in the workspace                               |
+| `create_sql_warehouse`  | Create a new SQL warehouse with configurable size and settings          |
+
 
 ### 📁 Workspace Objects
 
-| Tool | Description |
-|------|-------------|
-| `delete_workspace_object` | Delete an object from the Databricks workspace |
-| `get_workspace_object_status` | Get the status of an object in the Databricks workspace |
-| `import_workspace_object` | Import an object into the Databricks workspace |
-| `create_workspace_directory` | Create a directory in the Databricks workspace |
+| Tool                        | Description                                                        |
+|-----------------------------|--------------------------------------------------------------------|
+| `delete_workspace_object`   | Delete an object from the Databricks workspace                     |
+| `get_workspace_object_status` | Get the status of an object in the Databricks workspace          |
+| `import_workspace_object`   | Import an object (notebook, file, etc.) into the workspace         |
+| `create_workspace_directory` | Create a directory in the Databricks workspace                    |
 
 ---
 
