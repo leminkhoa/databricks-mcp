@@ -3,7 +3,8 @@ Configuration settings for the Databricks MCP server.
 """
 
 import os
-from typing import Any, Dict, Optional
+import sys
+from typing import Dict, Optional
 from urllib.parse import urlparse
 from .logging import create_logger, SingletonLogger
 
@@ -12,11 +13,18 @@ logger = create_logger(__name__)
 # Import dotenv if available, but don't require it
 try:
     from dotenv import load_dotenv
-    # Load .env file if it exists
-    load_dotenv()
-    logger.info("Successfully loaded dotenv")
+    logger.info("Start loading .env if exists")
+    if load_dotenv(override=False):
+        logger.info("Successfully loaded .env")
+    else:
+        logger.warning("No .env file found")
 except ImportError:
     logger.warning("python-dotenv not found, environment variables must be set manually")
+
+# Check if required environment variables are set
+if not os.environ.get("DATABRICKS_HOST") or not os.environ.get("DATABRICKS_TOKEN"):
+    logger.error("DATABRICKS_HOST and DATABRICKS_TOKEN must be provided. Please set these environment variables and try again.")
+    sys.exit(1)
 
 # Version
 VERSION = "0.1.0"
@@ -26,13 +34,13 @@ class ConfigurationError(Exception):
     pass
 
 class Settings:
-    """Settings for the application."""
+    """Settings for the MCP application."""
     
     def __init__(self):
         """Initialize settings from environment variables."""
         # Databricks API configuration
-        self._databricks_host = self._get_env("DATABRICKS_HOST", "https://example.databricks.net")
-        self._databricks_token = self._get_env("DATABRICKS_TOKEN", "dapi_token_placeholder")
+        self._databricks_host = self._get_env("DATABRICKS_HOST")
+        self._databricks_token = self._get_env("DATABRICKS_TOKEN")
         
         # Server configuration
         self.server_host = self._get_env("SERVER_HOST", "0.0.0.0")
@@ -44,6 +52,9 @@ class Settings:
         
         # Version
         self.version = VERSION
+
+        # Transport
+        self.transport = self._get_env("TRANSPORT", "stdio").lower()
         
         # Validate settings
         self._validate_settings()
@@ -145,4 +156,4 @@ def get_databricks_api_url(endpoint: str) -> str:
     return f"{host}{endpoint}"
 
 # Create global settings instance
-settings = Settings() 
+settings = Settings()

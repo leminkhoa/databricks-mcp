@@ -13,7 +13,7 @@ logger = create_logger(__name__)
 async def main():
     """Run the Databricks MCP server."""
     try:
-        server = DatabricksMCPServer("databricks")
+        server = DatabricksMCPServer(server_name="databricks-mcp")
         await server.run()
     except Exception as e:
         logger.error(f"Error running MCP server: {e}")
